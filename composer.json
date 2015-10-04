@@ -1,0 +1,34 @@
+{
+    "name": "dominionenterprises/util-http",
+    "description": "A collection of http classes.",
+    "keywords": ["utility", "http"],
+    "authors": [
+        {
+            "name": "Chad Gray",
+            "email": "chadwickgray@gmail.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Spencer Rinehart",
+            "email": "anubis@overthemonkey.com",
+            "role": "Developer"
+        },
+        {
+            "name": "Jonathan Gaillard",
+            "email": "jonathan.gaillard@dominionenterprises.com",
+            "role": "Developer"
+        }
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "~5.4 || ~7.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "satooshi/php-coveralls": "~0.6.1",
+        "squizlabs/php_codesniffer": "~2.0"
+    },
+    "autoload": {
+        "psr-4": { "DominionEnterprises\\": "src" }
+    }
+}
