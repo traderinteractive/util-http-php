@@ -1,5 +1,5 @@
 # util-http-php
-[![Build Status](https://travis-ci.org/dominionenterprises/util-string-php.svg?branch=master)](https://travis-ci.org/dominionenterprises/util-http-php)
+[![Build Status](https://travis-ci.org/dominionenterprises/util-http-php.svg?branch=master)](https://travis-ci.org/dominionenterprises/util-http-php)
 [![Scrutinizer Code Quality](http://img.shields.io/scrutinizer/g/dominionenterprises/util-http-php.svg?style=flat)](https://scrutinizer-ci.com/g/dominionenterprises/util-http-php/)
 [![Coverage Status](https://coveralls.io/repos/dominionenterprises/util-http-php/badge.svg?branch=master&service=github)](https://coveralls.io/github/dominionenterprises/util-http-php?branch=master)
 
