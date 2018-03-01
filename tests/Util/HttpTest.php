@@ -1,10 +1,13 @@
 <?php
+
 namespace DominionEnterprises\Util;
+
+use PHPUnit\Framework\TestCase;
 
 /**
  * @coversDefaultClass \DominionEnterprises\Util\Http
  */
-final class HttpTest extends \PHPUnit_Framework_TestCase
+final class HttpTest extends TestCase
 {
     /**
      * Verify behavior of parseHeaders when $rawHeaders is not a string.

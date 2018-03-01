@@ -5,10 +5,12 @@
 
 namespace DominionEnterprises;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @coversDefaultClass \DominionEnterprises\HttpException
  */
-final class HttpExceptionTest extends \PHPUnit_Framework_TestCase
+final class HttpExceptionTest extends TestCase
 {
     /**
      * @test
