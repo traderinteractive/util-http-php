@@ -1,11 +1,9 @@
 <?php
-/**
- * Defines the \DominionEnterprises\Util\Http class.
- */
 
 namespace DominionEnterprises\Util;
 
-use DominionEnterprises\Util;
+use Exception;
+use InvalidArgumentException;
 
 /**
  * Static class with various HTTP related functions.
@@ -46,12 +44,12 @@ final class Http
      *
      * @return array the parsed headers
      *
-     * @throws \Exception Thrown if unable to parse the headers
+     * @throws Exception Thrown if unable to parse the headers
      */
-    public static function parseHeaders($rawHeaders)
+    public static function parseHeaders(string $rawHeaders) : array
     {
         if (!is_string($rawHeaders) || trim($rawHeaders) === '') {
-            throw new \InvalidArgumentException('$rawHeaders was not a string');
+            throw new InvalidArgumentException('$rawHeaders was not a string');
         }
 
         $headers = [];
@@ -93,7 +91,7 @@ final class Http
                 continue;
             }
 
-            throw new \Exception("Unsupported header format: {$field}");
+            throw new Exception("Unsupported header format: {$field}");
         }
 
         return $headers;
@@ -124,7 +122,7 @@ final class Http
      *
      * @return string the built query string
      */
-    public static function buildQueryString(array $parameters)
+    public static function buildQueryString(array $parameters) : string
     {
         $queryStrings = [];
         foreach ($parameters as $parameterName => $parameterValue) {
@@ -157,13 +155,13 @@ final class Http
      *
      * @return array such as ['id' => ['boo'], 'another' => ['wee', 'boo']]
      *
-     * @throws \InvalidArgumentException if $url was not a string
-     * @throws \Exception if more than one value in a $collapsedParams param
+     * @throws InvalidArgumentException if $url was not a string
+     * @throws Exception if more than one value in a $collapsedParams param
      */
-    public static function getQueryParams($url, array $collapsedParams = [])
+    public static function getQueryParams(string $url, array $collapsedParams = []) : array
     {
         if (!is_string($url)) {
-            throw new \InvalidArgumentException('$url was not a string');
+            throw new InvalidArgumentException('$url was not a string');
         }
 
         $queryString = parse_url($url, PHP_URL_QUERY);
@@ -196,7 +194,7 @@ final class Http
             }
 
             if ($collapsed) {
-                throw new \Exception("Parameter '{$name}' had more than one value but in \$collapsedParams");
+                throw new Exception("Parameter '{$name}' had more than one value but in \$collapsedParams");
             }
 
             $result[$name][] = $value;
@@ -213,13 +211,13 @@ final class Http
      *
      * @return array such as ['single' => 'boo', 'multi' => ['wee', 'boo']] if 'multi' is given in $expectedArrayParams
      *
-     * @throws \InvalidArgumentException if $url was not a string
-     * @throws \Exception if a parameter is given as array but not included in the expected array argument
+     * @throws InvalidArgumentException if $url was not a string
+     * @throws Exception if a parameter is given as array but not included in the expected array argument
      */
-    public static function getQueryParamsCollapsed($url, array $expectedArrayParams = [])
+    public static function getQueryParamsCollapsed(string $url, array $expectedArrayParams = []) : array
     {
         if (!is_string($url)) {
-            throw new \InvalidArgumentException('$url was not a string');
+            throw new InvalidArgumentException('$url was not a string');
         }
 
         $queryString = parse_url($url, PHP_URL_QUERY);
@@ -245,7 +243,7 @@ final class Http
             }
 
             if (!in_array($name, $expectedArrayParams)) {
-                throw new \Exception("Parameter '{$name}' is not expected to be an array, but array given");
+                throw new Exception("Parameter '{$name}' is not expected to be an array, but array given");
             }
 
             if (!is_array($result[$name])) {

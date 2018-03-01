@@ -1,10 +1,8 @@
 <?php
-/**
- * Defines the HttpExceptionTest class
- */
 
 namespace DominionEnterprises;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -12,50 +10,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class HttpExceptionTest extends TestCase
 {
-    /**
-     * @test
-     * @covers ::__construct
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $message was not a string
-     */
-    public function nonStringMessage()
-    {
-        new HttpException(1);
-    }
-
-    /**
-     * @test
-     * @covers ::__construct
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $httpStatusCode was not an int
-     */
-    public function nonIntHttpCode()
-    {
-        new HttpException('message', 1.1);
-    }
-
-    /**
-     * @test
-     * @covers ::__construct
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $code was not an int
-     */
-    public function nonIntCode()
-    {
-        new HttpException('message', 1, 1.1);
-    }
-
-    /**
-     * @test
-     * @covers ::__construct
-     * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage $userMessage was not null and not a string
-     */
-    public function nonStringUserMessage()
-    {
-        new HttpException('message', 1, 1, null, 1);
-    }
-
     /**
      * @test
      * @covers ::__construct()
