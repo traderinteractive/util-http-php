@@ -79,12 +79,12 @@ final class Http
                 continue;
             }
 
-            if (self::isRequest($field, $match)) {
+            if (preg_match('#([A-Za-z]+) +([^ ]+) +HTTP/([\d.]+)#', $field, $match)) {
                 $headers = self::setRequest($match, $headers);
                 continue;
             }
 
-            if (self::isResponse($field, $match)) {
+            if (preg_match('#HTTP/([\d.]+) +(\d{3}) +(.*)#', $field, $match)) {
                 $headers = self::setResponse($match, $headers);
                 continue;
             }
@@ -92,6 +92,20 @@ final class Http
             throw new Exception("Unsupported header format: {$field}");
         }
 
+        return $headers;
+    }
+
+    private static function setRequest($match, array $headers) : array
+    {
+        $headers['Request Method'] = trim($match[1]);
+        $headers['Request Url'] = trim($match[2]);
+        return $headers;
+    }
+
+    private static function setResponse($match, array $headers) : array
+    {
+        $headers['Response Code'] = (int)$match[2];
+        $headers['Response Status'] = trim($match[3]);
         return $headers;
     }
 
@@ -252,29 +266,5 @@ final class Http
         }
 
         return $result;
-    }
-
-    private static function setRequest($match, array $headers) : array
-    {
-        $headers['Request Method'] = trim($match[1]);
-        $headers['Request Url'] = trim($match[2]);
-        return $headers;
-    }
-
-    private static function setResponse($match, array $headers) : array
-    {
-        $headers['Response Code'] = (int)$match[2];
-        $headers['Response Status'] = trim($match[3]);
-        return $headers;
-    }
-
-    private static function isResponse(string $field, array &$match)
-    {
-        return preg_match('#HTTP/([\d.]+) +(\d{3}) +(.*)#', $field, $match);
-    }
-
-    private static function isRequest(string $field, array &$match)
-    {
-        return preg_match('#([A-Za-z]+) +([^ ]+) +HTTP/([\d.]+)#', $field, $match);
     }
 }
