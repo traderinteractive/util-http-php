@@ -3,7 +3,6 @@
 namespace DominionEnterprises;
 
 use Exception;
-use InvalidArgumentException;
 
 /**
  * Exception to throw when an http status code should be included.
@@ -23,11 +22,6 @@ final class HttpException extends Exception
      * @param int $code @see Exception::__construct()
      * @param Exception $previous @see Exception::__construct()
      * @param string|null $userMessage a nicer message to display to the user sans sensitive details
-     *
-     * @throws InvalidArgumentException if $message is not a string
-     * @throws InvalidArgumentException if $httpStatusCode is not an int
-     * @throws InvalidArgumentException if $code is not an int
-     * @throws InvalidArgumentException if $userMessage is not null and is not a string
      */
     public function __construct(
         string $message = 'Application Error',
@@ -36,10 +30,6 @@ final class HttpException extends Exception
         Exception $previous = null,
         string $userMessage = null
     ) {
-        if ($userMessage !== null && !is_string($userMessage)) {
-            throw new InvalidArgumentException('$userMessage was not null and not a string');
-        }
-
         parent::__construct($message, $code, $previous);
 
         $this->httpStatusCode = $httpStatusCode;

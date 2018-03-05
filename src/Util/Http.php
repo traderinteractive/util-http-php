@@ -3,7 +3,6 @@
 namespace DominionEnterprises\Util;
 
 use Exception;
-use InvalidArgumentException;
 
 /**
  * Static class with various HTTP related functions.
@@ -76,12 +75,12 @@ final class Http
             }
 
             if (preg_match('#([A-Za-z]+) +([^ ]+) +HTTP/([\d.]+)#', $field, $match)) {
-                $headers = self::setRequest($match, $headers);
+                $headers = self::addRequestDataToHeaders($match, $headers);
                 continue;
             }
 
             if (preg_match('#HTTP/([\d.]+) +(\d{3}) +(.*)#', $field, $match)) {
-                $headers = self::setResponse($match, $headers);
+                $headers = self::addResponseDataToHeaders($match, $headers);
                 continue;
             }
 
@@ -91,14 +90,14 @@ final class Http
         return $headers;
     }
 
-    private static function setRequest(array $match, array $headers) : array
+    private static function addRequestDataToHeaders(array $match, array $headers) : array
     {
         $headers['Request Method'] = trim($match[1]);
         $headers['Request Url'] = trim($match[2]);
         return $headers;
     }
 
-    private static function setResponse(array $match, array $headers) : array
+    private static function addResponseDataToHeaders(array $match, array $headers) : array
     {
         $headers['Response Code'] = (int)$match[2];
         $headers['Response Status'] = trim($match[3]);
@@ -163,15 +162,10 @@ final class Http
      *
      * @return array such as ['id' => ['boo'], 'another' => ['wee', 'boo']]
      *
-     * @throws InvalidArgumentException if $url was not a string
      * @throws Exception if more than one value in a $collapsedParams param
      */
     public static function getQueryParams(string $url, array $collapsedParams = []) : array
     {
-        if (!is_string($url)) {
-            throw new InvalidArgumentException('$url was not a string');
-        }
-
         $queryString = parse_url($url, PHP_URL_QUERY);
         if (!is_string($queryString)) {
             return [];
@@ -219,15 +213,10 @@ final class Http
      *
      * @return array such as ['single' => 'boo', 'multi' => ['wee', 'boo']] if 'multi' is given in $expectedArrayParams
      *
-     * @throws InvalidArgumentException if $url was not a string
      * @throws Exception if a parameter is given as array but not included in the expected array argument
      */
     public static function getQueryParamsCollapsed(string $url, array $expectedArrayParams = []) : array
     {
-        if (!is_string($url)) {
-            throw new InvalidArgumentException('$url was not a string');
-        }
-
         $queryString = parse_url($url, PHP_URL_QUERY);
         if (!is_string($queryString)) {
             return [];
