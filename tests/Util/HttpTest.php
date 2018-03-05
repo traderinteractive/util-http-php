@@ -1,26 +1,14 @@
 <?php
-namespace DominionEnterprises\Util;
+
+namespace TraderInteractive\Util;
+
+use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Util\Http
+ * @coversDefaultClass \TraderInteractive\Util\Http
  */
-final class HttpTest extends \PHPUnit_Framework_TestCase
+final class HttpTest extends TestCase
 {
-    /**
-     * Verify behavior of parseHeaders when $rawHeaders is not a string.
-     *
-     * @test
-     * @covers ::parseHeaders
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $rawHeaders was not a string
-     *
-     * @return void
-     */
-    public function parseHeadersNonStringRawHeaders()
-    {
-        Http::parseHeaders(true);
-    }
-
     /**
      * @test
      * @group unit
@@ -46,7 +34,7 @@ final class HttpTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $headers = "&some\r\nbad+headers";
-            $result = Http::parseHeaders($headers);
+            Http::parseHeaders($headers);
             $this->fail('No exception thrown');
         } catch (\Exception $e) {
             $this->assertSame('Unsupported header format: &some', $e->getMessage());
@@ -110,6 +98,23 @@ EOT;
     }
 
     /**
+     * Verifies that the rawHeaders string cannot be whitespace.
+     *
+     * @test
+     * @group unit
+     * @covers ::parseHeaders
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $rawHeaders cannot be whitespace
+     *
+     * @return void
+     */
+    public function parseHeadersWhitespace()
+    {
+        Http::parseHeaders('');
+    }
+
+    /**
      * @test
      * @covers ::buildQueryString
      *
@@ -160,7 +165,7 @@ EOT;
     }
 
     /**
-     * Verifies Mulit Parameter Method can handle a normal url
+     * Verifies Multi Parameter Method can handle a normal url
      *
      * @test
      * @group unit
@@ -182,7 +187,7 @@ EOT;
     }
 
     /**
-     * Verifies Mulit Parameter Method can handle a url with an empty parameter
+     * Verifies Multi Parameter Method can handle a url with an empty parameter
      *
      * @test
      * @group unit
@@ -214,20 +219,6 @@ EOT;
     public function getQueryParamsGarbage()
     {
         $this->assertSame([], Http::getQueryParams('GARBAGE'));
-    }
-
-    /**
-     * @test
-     * @group unit
-     * @covers ::getQueryParams
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $url was not a string
-     *
-     * @return void
-     */
-    public function getQueryParamsUrlNotString()
-    {
-        Http::getQueryParams(1);
     }
 
     /**
@@ -283,19 +274,6 @@ EOT;
     }
 
     /**
-     * @test
-     * @covers ::getQueryParamsCollapsed
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $url was not a string
-     *
-     * @return void
-     */
-    public function getQueryParamsCollapsedUrlNotString()
-    {
-        Http::getQueryParamsCollapsed(1);
-    }
-
-    /**
      * Verifies multi parameter method with a garbage query string
      *
      * @test
@@ -303,13 +281,13 @@ EOT;
      *
      * @return void
      */
-    public function getQueryParamsCollaspedGarbage()
+    public function getQueryParamsCollapsedGarbage()
     {
         $this->assertSame([], Http::getQueryParamsCollapsed('GARBAGE'));
     }
 
     /**
-     * Verifies Mulit Parameter Method can handle a url with an empty parameter
+     * Verifies Multi Parameter Method can handle a url with an empty parameter
      *
      * @test
      * @covers ::getQueryParamsCollapsed

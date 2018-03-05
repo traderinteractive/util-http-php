@@ -1,11 +1,9 @@
 <?php
-/**
- * Defines the \DominionEnterprises\Util\Http class.
- */
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
-use DominionEnterprises\Util;
+use Exception;
+use InvalidArgumentException;
 
 /**
  * Static class with various HTTP related functions.
@@ -23,7 +21,7 @@ final class Http
      *            "Set-Cookie: foo=bar\r\n".
      *            "Set-Cookie: baz=quux\r\n".
      *            "Folds: are\r\n\treformatted\r\n";
-     * print_r(\DominionEnterprises\HttpUtil::parseHeaders($headers));
+     * print_r(\TraderInteractive\HttpUtil::parseHeaders($headers));
      * </code>
      * The above example will output:
      * <pre>
@@ -46,12 +44,12 @@ final class Http
      *
      * @return array the parsed headers
      *
-     * @throws \Exception Thrown if unable to parse the headers
+     * @throws Exception Thrown if unable to parse the headers
      */
-    public static function parseHeaders($rawHeaders)
+    public static function parseHeaders(string $rawHeaders) : array
     {
-        if (!is_string($rawHeaders) || trim($rawHeaders) === '') {
-            throw new \InvalidArgumentException('$rawHeaders was not a string');
+        if (empty(trim($rawHeaders))) {
+            throw new InvalidArgumentException('$rawHeaders cannot be whitespace');
         }
 
         $headers = [];
@@ -82,20 +80,32 @@ final class Http
             }
 
             if (preg_match('#([A-Za-z]+) +([^ ]+) +HTTP/([\d.]+)#', $field, $match)) {
-                $headers['Request Method'] = trim($match[1]);
-                $headers['Request Url'] = trim($match[2]);
+                $headers = self::addRequestDataToHeaders($match, $headers);
                 continue;
             }
 
             if (preg_match('#HTTP/([\d.]+) +(\d{3}) +(.*)#', $field, $match)) {
-                $headers['Response Code'] = (int)$match[2];
-                $headers['Response Status'] = trim($match[3]);
+                $headers = self::addResponseDataToHeaders($match, $headers);
                 continue;
             }
 
-            throw new \Exception("Unsupported header format: {$field}");
+            throw new Exception("Unsupported header format: {$field}");
         }
 
+        return $headers;
+    }
+
+    private static function addRequestDataToHeaders(array $match, array $headers) : array
+    {
+        $headers['Request Method'] = trim($match[1]);
+        $headers['Request Url'] = trim($match[2]);
+        return $headers;
+    }
+
+    private static function addResponseDataToHeaders(array $match, array $headers) : array
+    {
+        $headers['Response Code'] = (int)$match[2];
+        $headers['Response Status'] = trim($match[3]);
         return $headers;
     }
 
@@ -110,7 +120,7 @@ final class Http
      *   'param3' => false,
      * ];
      *
-     * $queryString = \DominionEnterprises\HttpUtil::buildQueryString($parameters);
+     * $queryString = \TraderInteractive\HttpUtil::buildQueryString($parameters);
      *
      * echo $queryString
      * </code>
@@ -124,7 +134,7 @@ final class Http
      *
      * @return string the built query string
      */
-    public static function buildQueryString(array $parameters)
+    public static function buildQueryString(array $parameters) : string
     {
         $queryStrings = [];
         foreach ($parameters as $parameterName => $parameterValue) {
@@ -157,15 +167,10 @@ final class Http
      *
      * @return array such as ['id' => ['boo'], 'another' => ['wee', 'boo']]
      *
-     * @throws \InvalidArgumentException if $url was not a string
-     * @throws \Exception if more than one value in a $collapsedParams param
+     * @throws Exception if more than one value in a $collapsedParams param
      */
-    public static function getQueryParams($url, array $collapsedParams = [])
+    public static function getQueryParams(string $url, array $collapsedParams = []) : array
     {
-        if (!is_string($url)) {
-            throw new \InvalidArgumentException('$url was not a string');
-        }
-
         $queryString = parse_url($url, PHP_URL_QUERY);
         if (!is_string($queryString)) {
             return [];
@@ -196,7 +201,7 @@ final class Http
             }
 
             if ($collapsed) {
-                throw new \Exception("Parameter '{$name}' had more than one value but in \$collapsedParams");
+                throw new Exception("Parameter '{$name}' had more than one value but in \$collapsedParams");
             }
 
             $result[$name][] = $value;
@@ -213,15 +218,10 @@ final class Http
      *
      * @return array such as ['single' => 'boo', 'multi' => ['wee', 'boo']] if 'multi' is given in $expectedArrayParams
      *
-     * @throws \InvalidArgumentException if $url was not a string
-     * @throws \Exception if a parameter is given as array but not included in the expected array argument
+     * @throws Exception if a parameter is given as array but not included in the expected array argument
      */
-    public static function getQueryParamsCollapsed($url, array $expectedArrayParams = [])
+    public static function getQueryParamsCollapsed(string $url, array $expectedArrayParams = []) : array
     {
-        if (!is_string($url)) {
-            throw new \InvalidArgumentException('$url was not a string');
-        }
-
         $queryString = parse_url($url, PHP_URL_QUERY);
         if (!is_string($queryString)) {
             return [];
@@ -245,7 +245,7 @@ final class Http
             }
 
             if (!in_array($name, $expectedArrayParams)) {
-                throw new \Exception("Parameter '{$name}' is not expected to be an array, but array given");
+                throw new Exception("Parameter '{$name}' is not expected to be an array, but array given");
             }
 
             if (!is_array($result[$name])) {
