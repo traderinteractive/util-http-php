@@ -1,6 +1,6 @@
 <?php
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
 use Exception;
 
@@ -20,7 +20,7 @@ final class Http
      *            "Set-Cookie: foo=bar\r\n".
      *            "Set-Cookie: baz=quux\r\n".
      *            "Folds: are\r\n\treformatted\r\n";
-     * print_r(\DominionEnterprises\HttpUtil::parseHeaders($headers));
+     * print_r(\TraderInteractive\HttpUtil::parseHeaders($headers));
      * </code>
      * The above example will output:
      * <pre>
@@ -115,7 +115,7 @@ final class Http
      *   'param3' => false,
      * ];
      *
-     * $queryString = \DominionEnterprises\HttpUtil::buildQueryString($parameters);
+     * $queryString = \TraderInteractive\HttpUtil::buildQueryString($parameters);
      *
      * echo $queryString
      * </code>

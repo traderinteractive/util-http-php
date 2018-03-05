@@ -1,12 +1,12 @@
 <?php
 
-namespace DominionEnterprises;
+namespace TraderInteractive;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\HttpException
+ * @coversDefaultClass \TraderInteractive\HttpException
  */
 final class HttpExceptionTest extends TestCase
 {

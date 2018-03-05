@@ -1,11 +1,11 @@
 <?php
 
-namespace DominionEnterprises\Util;
+namespace TraderInteractive\Util;
 
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \DominionEnterprises\Util\Http
+ * @coversDefaultClass \TraderInteractive\Util\Http
  */
 final class HttpTest extends TestCase
 {
