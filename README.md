@@ -12,7 +12,7 @@ A collection of general util-httpities for making common programming tasks easie
 
 ## Requirements
 
-util-http-php requires PHP 5.4 (or later).
+util-http-php requires PHP 7.0 (or later).
 
 ## Composer
 
