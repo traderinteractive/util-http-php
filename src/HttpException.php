@@ -36,18 +36,6 @@ final class HttpException extends Exception
         Exception $previous = null,
         string $userMessage = null
     ) {
-        if (!is_string($message)) {
-            throw new InvalidArgumentException('$message was not a string');
-        }
-
-        if (!is_int($httpStatusCode)) {
-            throw new InvalidArgumentException('$httpStatusCode was not an int');
-        }
-
-        if (!is_int($code)) {
-            throw new InvalidArgumentException('$code was not an int');
-        }
-
         if ($userMessage !== null && !is_string($userMessage)) {
             throw new InvalidArgumentException('$userMessage was not null and not a string');
         }

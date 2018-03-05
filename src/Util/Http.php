@@ -48,10 +48,6 @@ final class Http
      */
     public static function parseHeaders(string $rawHeaders) : array
     {
-        if (!is_string($rawHeaders) || trim($rawHeaders) === '') {
-            throw new InvalidArgumentException('$rawHeaders was not a string');
-        }
-
         $headers = [];
         $rawHeaders = preg_replace("/\r\n[\t ]+/", ' ', trim($rawHeaders));
         $fields = explode("\r\n", $rawHeaders);
@@ -95,14 +91,14 @@ final class Http
         return $headers;
     }
 
-    private static function setRequest($match, array $headers) : array
+    private static function setRequest(array $match, array $headers) : array
     {
         $headers['Request Method'] = trim($match[1]);
         $headers['Request Url'] = trim($match[2]);
         return $headers;
     }
 
-    private static function setResponse($match, array $headers) : array
+    private static function setResponse(array $match, array $headers) : array
     {
         $headers['Response Code'] = (int)$match[2];
         $headers['Response Status'] = trim($match[3]);
