@@ -3,6 +3,7 @@
 namespace TraderInteractive\Util;
 
 use Exception;
+use InvalidArgumentException;
 
 /**
  * Static class with various HTTP related functions.
@@ -47,6 +48,10 @@ final class Http
      */
     public static function parseHeaders(string $rawHeaders) : array
     {
+        if (empty(trim($rawHeaders))) {
+            throw new InvalidArgumentException('$rawHeaders cannot be whitespace');
+        }
+
         $headers = [];
         $rawHeaders = preg_replace("/\r\n[\t ]+/", ' ', trim($rawHeaders));
         $fields = explode("\r\n", $rawHeaders);

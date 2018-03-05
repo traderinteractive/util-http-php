@@ -98,6 +98,23 @@ EOT;
     }
 
     /**
+     * Verifies that the rawHeaders string cannot be whitespace.
+     *
+     * @test
+     * @group unit
+     * @covers ::parseHeaders
+     *
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage $rawHeaders cannot be whitespace
+     *
+     * @return void
+     */
+    public function parseHeadersWhitespace()
+    {
+        Http::parseHeaders('');
+    }
+
+    /**
      * @test
      * @covers ::buildQueryString
      *
