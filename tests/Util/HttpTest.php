@@ -104,13 +104,12 @@ EOT;
      * @group unit
      * @covers ::parseHeaders
      *
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $rawHeaders cannot be whitespace
-     *
      * @return void
      */
     public function parseHeadersWhitespace()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$rawHeaders cannot be whitespace');
         Http::parseHeaders('');
     }
 
@@ -236,13 +235,13 @@ EOT;
     /**
      * @test
      * @covers ::getQueryParams
-     * @expectedException \Exception
-     * @expectedExceptionMessage Parameter 'stuff' had more than one value but in $collapsedParams
      *
      * @return void
      */
     public function getQueryParamsCollapsedMoreThanOneValue()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Parameter \'stuff\' had more than one value but in $collapsedParams');
         Http::getQueryParams('http://foo.com/bar/?stuff=yeah&stuff=boy&moreStuff=mhmm', ['stuff']);
     }
 
@@ -262,13 +261,13 @@ EOT;
     /**
      * @test
      * @covers ::getQueryParamsCollapsed
-     * @expectedException \Exception
-     * @expectedExceptionMessage Parameter 'boo' is not expected to be an array, but array given
      *
      * @return void
      */
     public function getQueryParamsCollapsedUnexpectedArray()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Parameter \'boo\' is not expected to be an array, but array given');
         $url = 'http://foo.com/bar/?boo=1&foo=bar&boo=2';
         Http::getQueryParamsCollapsed($url);
     }
