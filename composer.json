@@ -2,23 +2,6 @@
     "name": "traderinteractive/util-http",
     "description": "A collection of http classes.",
     "keywords": ["utility", "http"],
-    "authors": [
-        {
-            "name": "Chad Gray",
-            "email": "chadwickgray@gmail.com",
-            "role": "Developer"
-        },
-        {
-            "name": "Spencer Rinehart",
-            "email": "anubis@overthemonkey.com",
-            "role": "Developer"
-        },
-        {
-            "name": "Jonathan Gaillard",
-            "email": "jonathan.gaillard@dominionenterprises.com",
-            "role": "Developer"
-        }
-    ],
     "license": "MIT",
     "config": {
         "sort-packages": true

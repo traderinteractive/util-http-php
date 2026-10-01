@@ -235,6 +235,38 @@ EOT;
     /**
      * @test
      * @covers ::getQueryParams
+     * @dataProvider provideInvalidGetQueryParamData
+     */
+    public function getQueryParamsWithInvalidUrls(string $url, array $expected)
+    {
+        $this->assertSame($expected, Http::getQueryParams($url));
+    }
+
+    public static function provideInvalidGetQueryParamData(): array
+    {
+        return [
+            'empty query string' => [
+                'url' => 'http://example.com/widgets/123?',
+                'expected' => [],
+            ],
+            'malformed url' => [
+                'url' => 'http:///example.com/widgets/123',
+                'expected' => [],
+            ],
+            'trailing &' => [
+                'url' => 'http://example.com/widgets?a=b&',
+                'expected' => ['a' => ['b']],
+            ],
+            'leading &' => [
+                'url' => 'http://example.com/widgets?&a=b',
+                'expected' => ['a' => ['b']],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @covers ::getQueryParams
      *
      * @return void
      */
@@ -298,5 +330,37 @@ EOT;
         $url = 'http://foo.com/bar/?stuff=yeah&moreStuff=&moreStuff=jazz&otherStuff';
         $expected = ['stuff' => 'yeah', 'moreStuff' => ['', 'jazz'], 'otherStuff' => ''];
         $this->assertSame($expected, Http::getQueryParamsCollapsed($url, ['moreStuff']));
+    }
+
+    /**
+     * @test
+     * @covers ::getQueryParamsCollapsed
+     * @dataProvider provideInvalidGetQueryParamCollapsedData
+     */
+    public function getQueryParamsCollapsedWithInvalidUrls(string $url, array $expected)
+    {
+        $this->assertSame($expected, Http::getQueryParamsCollapsed($url));
+    }
+
+    public static function provideInvalidGetQueryParamCollapsedData(): array
+    {
+        return [
+            'empty query string' => [
+                'url' => 'http://example.com/widgets/123?',
+                'expected' => [],
+            ],
+            'malformed url' => [
+                'url' => 'http:///example.com/widgets/123',
+                'expected' => [],
+            ],
+            'trailing &' => [
+                'url' => 'http://example.com/widgets?a=b&',
+                'expected' => ['a' => 'b'],
+            ],
+            'leading &' => [
+                'url' => 'http://example.com/widgets?&a=b',
+                'expected' => ['a' => 'b'],
+            ],
+        ];
     }
 }
