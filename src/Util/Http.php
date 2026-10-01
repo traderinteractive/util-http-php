@@ -172,7 +172,7 @@ final class Http
     public static function getQueryParams(string $url, array $collapsedParams = []) : array
     {
         $queryString = parse_url($url, PHP_URL_QUERY);
-        if (!is_string($queryString)) {
+        if (!is_string($queryString) || trim($queryString) === '') {
             return [];
         }
 
@@ -185,6 +185,10 @@ final class Http
             $nameAndValue = explode('=', $arg);
             if (isset($nameAndValue[1])) {
                 list($name, $value) = $nameAndValue;
+            }
+
+            if ($name === '' && $value === '') {
+                continue;
             }
 
             $name = rawurldecode($name);
@@ -223,7 +227,7 @@ final class Http
     public static function getQueryParamsCollapsed(string $url, array $expectedArrayParams = []) : array
     {
         $queryString = parse_url($url, PHP_URL_QUERY);
-        if (!is_string($queryString)) {
+        if (!is_string($queryString) || trim($queryString) === '') {
             return [];
         }
 
@@ -234,6 +238,10 @@ final class Http
             $nameAndValue = explode('=', $arg);
             if (isset($nameAndValue[1])) {
                 list($name, $value) = $nameAndValue;
+            }
+
+            if ($name === '' && $value === '') {
+                continue;
             }
 
             $name = rawurldecode($name);
